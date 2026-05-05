@@ -2,9 +2,11 @@ package com.example.demo.product.service;
 
 import com.example.demo.common.exception.DuplicateSkuException;
 import com.example.demo.common.exception.NotFoundException;
+import com.example.demo.common.kafka.KafkaProducerService;
 import com.example.demo.inventory.entity.Inventory;
 import com.example.demo.inventory.repo.InventoryRepository;
 import com.example.demo.product.dto.ProductDTOs;
+import com.example.demo.product.dto.ProductEvent;
 import com.example.demo.product.entity.Product;
 import com.example.demo.product.repo.ProductRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -20,10 +23,12 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final InventoryRepository inventoryRepository;
+    private final KafkaProducerService kafkaProducerService;
 
-    public ProductService(ProductRepository productRepository, InventoryRepository inventoryRepository) {
+    public ProductService(ProductRepository productRepository, InventoryRepository inventoryRepository, KafkaProducerService kafkaProducerService) {
         this.productRepository = productRepository;
         this.inventoryRepository = inventoryRepository;
+        this.kafkaProducerService = kafkaProducerService;
     }
 
     public Page<ProductDTOs.ProductSummaryDTO> list(Long businessId, String q, Pageable pageable) {
@@ -64,7 +69,41 @@ public class ProductService {
         inv.setSafetyStock(0);
         inventoryRepository.save(inv);
 
+
+        sendToKafka(p);
+
         return toDTO(p);
+    }
+
+    private void sendToKafka(Product p) {
+        // Enviar evento a Kafka
+        ProductEvent event = new ProductEvent(
+                p.getId(),
+                p.getName(),
+                p.getDescription(),
+                p.getPrice(),
+                "CREATE",
+                "API"
+        );
+        kafkaProducerService.sendProductEvent(event);
+    }
+
+    public Product createProductFromCSV(Product product) {
+        Product savedProduct = productRepository.save(product);
+
+        LocalDateTime timestamp = LocalDateTime.now();
+        // Enviar evento a Kafka
+        ProductEvent event = new ProductEvent(
+                savedProduct.getId(),
+                savedProduct.getName(),
+                savedProduct.getDescription(),
+                savedProduct.getPrice(),
+                "CREATE",
+                "CSV_IMPORT"
+        );
+        kafkaProducerService.sendProductEvent(event);
+
+        return savedProduct;
     }
 
     @Transactional
@@ -88,6 +127,9 @@ public class ProductService {
         p.setVatRate(dto.vatRate);
         if (dto.isActive != null) p.setActive(dto.isActive);
         p = productRepository.save(p);
+
+        sendToKafka(p);
+
         return toDTO(p);
     }
 
