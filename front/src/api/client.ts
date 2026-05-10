@@ -1,13 +1,12 @@
 export const BUSINESS_ID = 1;
 
-const MOCK_TOKEN = 'mock-jwt-placeholder';
-
 export async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const token = localStorage.getItem('token');
   const res = await fetch(path, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${MOCK_TOKEN}`,
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
       ...(options.headers ?? {}),
     },
   });

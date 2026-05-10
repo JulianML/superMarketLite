@@ -1,6 +1,15 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
+
   return (
     <nav className="bg-gray-900 text-white px-6 py-3 flex items-center gap-6">
       <span className="font-bold text-lg text-indigo-400">Market</span>
@@ -20,11 +29,18 @@ export default function Navbar() {
       >
         Inventario
       </NavLink>
-      <div className="ml-auto flex items-center gap-2">
-        <span className="bg-amber-500 text-amber-900 text-xs font-bold px-2 py-0.5 rounded">
-          DEMO
-        </span>
-        <span className="text-sm text-gray-300">Usuario de prueba</span>
+      <div className="ml-auto flex items-center gap-4">
+        {user && (
+          <>
+            <span className="text-sm text-gray-300">{user.email}</span>
+            <button
+              onClick={handleLogout}
+              className="text-sm text-gray-400 hover:text-white transition-colors"
+            >
+              Cerrar sesión
+            </button>
+          </>
+        )}
       </div>
     </nav>
   );

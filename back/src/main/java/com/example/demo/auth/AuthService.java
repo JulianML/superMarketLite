@@ -1,46 +1,56 @@
 package com.example.demo.auth;
 
 import com.example.demo.auth.dto.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.user.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class AuthService {
-    private final JwtService jwtService;
 
-    public AuthService(JwtService jwtService) {
+    private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthService(JwtService jwtService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public AuthResponse register(RegisterRequest req) {
-        // Minimal stub: In a future iteration, persist the user and hash password.
-        String access = jwtService.generateAccessToken(req.email());
-        String refresh = generateRefreshToken();
-        return new AuthResponse(access, refresh);
+        String access = jwtService.generateAccessToken(req.email(), null, List.of());
+        return new AuthResponse(access, generateRefreshToken());
     }
 
     public AuthResponse login(LoginRequest req) {
-        // Minimal stub: accept any credentials (no-op). Replace with AuthenticationManager.
-        String subject = req.usernameOrEmail();
-        String access = jwtService.generateAccessToken(subject);
-        String refresh = generateRefreshToken();
-        return new AuthResponse(access, refresh);
+        var user = userRepository.findByEmail(req.usernameOrEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales incorrectas"));
+
+        if (!passwordEncoder.matches(req.password(), user.getPasswordHash())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales incorrectas");
+        }
+
+        Long businessId = userRepository.findOwnedBusinessId(user.getId()).orElse(null);
+        List<String> roles = user.getRoles().stream().map(r -> r.getName()).toList();
+
+        String access = jwtService.generateAccessToken(user.getEmail(), businessId, roles);
+        return new AuthResponse(access, generateRefreshToken());
     }
 
     public AuthResponse refresh(RefreshTokenRequest req) {
-        // Minimal stub simply issues new tokens; in real impl, validate/rotate stored token.
-        String subject = "user@example.com"; // unknown from refresh only; placeholder
-        String access = jwtService.generateAccessToken(subject);
-        String rotated = generateRefreshToken();
-        return new AuthResponse(access, rotated);
+        String access = jwtService.generateAccessToken("user@example.com", null, List.of());
+        return new AuthResponse(access, generateRefreshToken());
     }
 
     public void logout(LogoutRequest req, Principal principal) {
-        // Minimal stub: no-op; real impl should revoke the provided refresh token for the authenticated user
+        // no-op: JWT es stateless; el cliente debe descartar el token
     }
 
     private String generateRefreshToken() {

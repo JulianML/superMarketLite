@@ -1,23 +1,59 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
+import LoginPage from './pages/LoginPage';
 import ProductsPage from './pages/ProductsPage';
 import InventoryPage from './pages/InventoryPage';
 import MovementsPage from './pages/MovementsPage';
+import { BUSINESS_ID } from './api/client';
+
+function AdminLayout() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      <main className="p-6 max-w-6xl mx-auto">
+        <Outlet />
+      </main>
+    </div>
+  );
+}
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <main className="p-6 max-w-6xl mx-auto">
-          <Routes>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route element={<AdminLayout />}>
             <Route path="/" element={<Navigate to="/products" replace />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/inventory" element={<InventoryPage />} />
-            <Route path="/inventory/:productId/movements" element={<MovementsPage />} />
-          </Routes>
-        </main>
-      </div>
-    </BrowserRouter>
+            <Route
+              path="/products"
+              element={
+                <PrivateRoute requiredBusinessId={BUSINESS_ID}>
+                  <ProductsPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/inventory"
+              element={
+                <PrivateRoute requiredBusinessId={BUSINESS_ID}>
+                  <InventoryPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/inventory/:productId/movements"
+              element={
+                <PrivateRoute requiredBusinessId={BUSINESS_ID}>
+                  <MovementsPage />
+                </PrivateRoute>
+              }
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

@@ -22,11 +22,13 @@ public class JwtService {
     @Value("${security.jwt.issuer:market-api}")
     private String issuer;
 
-    public String generateAccessToken(String subject) {
+    public String generateAccessToken(String subject, Long businessId, java.util.List<String> roles) {
         Instant now = Instant.now();
         return JWT.create()
                 .withIssuer(issuer)
                 .withSubject(subject)
+                .withClaim("businessId", businessId)
+                .withClaim("roles", roles)
                 .withIssuedAt(Date.from(now))
                 .withExpiresAt(Date.from(now.plus(accessExpMinutes, ChronoUnit.MINUTES)))
                 .withJWTId(UUID.randomUUID().toString())
@@ -34,11 +36,24 @@ public class JwtService {
     }
 
     public String extractSubject(String token) {
-        return JWT.require(Algorithm.HMAC256(secret)).withIssuer(issuer).build().verify(token).getSubject();
+        return decode(token).getSubject();
+    }
+
+    public Long extractBusinessId(String token) {
+        return decode(token).getClaim("businessId").asLong();
+    }
+
+    public java.util.List<String> extractRoles(String token) {
+        java.util.List<String> roles = decode(token).getClaim("roles").asList(String.class);
+        return roles != null ? roles : java.util.List.of();
     }
 
     public boolean isTokenValid(String token, String expectedSubject) {
-        DecodedJWT jwt = JWT.require(Algorithm.HMAC256(secret)).withIssuer(issuer).build().verify(token);
+        DecodedJWT jwt = decode(token);
         return jwt.getSubject().equals(expectedSubject) && jwt.getExpiresAt().toInstant().isAfter(Instant.now());
+    }
+
+    private DecodedJWT decode(String token) {
+        return JWT.require(Algorithm.HMAC256(secret)).withIssuer(issuer).build().verify(token);
     }
 }
