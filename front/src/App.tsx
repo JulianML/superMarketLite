@@ -6,9 +6,11 @@ import LoginPage from './pages/LoginPage';
 import ProductsPage from './pages/ProductsPage';
 import InventoryPage from './pages/InventoryPage';
 import MovementsPage from './pages/MovementsPage';
+import CatalogPage from './pages/CatalogPage';
+import ProductDetailPage from './pages/ProductDetailPage';
 import { BUSINESS_ID } from './api/client';
 
-function AdminLayout() {
+function AppLayout() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -25,8 +27,10 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route element={<AdminLayout />}>
-            <Route path="/" element={<Navigate to="/products" replace />} />
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<Navigate to="/catalog" replace />} />
+            <Route path="/catalog" element={<CatalogPage />} />
+            <Route path="/catalog/:id" element={<ProductDetailPage />} />
             <Route
               path="/products"
               element={
