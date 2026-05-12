@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
@@ -8,6 +9,7 @@ import InventoryPage from './pages/InventoryPage';
 import MovementsPage from './pages/MovementsPage';
 import CatalogPage from './pages/CatalogPage';
 import ProductDetailPage from './pages/ProductDetailPage';
+import CartPage from './pages/CartPage';
 import { BUSINESS_ID } from './api/client';
 
 function AppLayout() {
@@ -24,6 +26,7 @@ function AppLayout() {
 export default function App() {
   return (
     <AuthProvider>
+      <CartProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
@@ -31,6 +34,7 @@ export default function App() {
             <Route path="/" element={<Navigate to="/catalog" replace />} />
             <Route path="/catalog" element={<CatalogPage />} />
             <Route path="/catalog/:id" element={<ProductDetailPage />} />
+            <Route path="/cart" element={<CartPage />} />
             <Route
               path="/products"
               element={
@@ -58,6 +62,7 @@ export default function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      </CartProvider>
     </AuthProvider>
   );
 }

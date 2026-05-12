@@ -3,6 +3,7 @@ export const BUSINESS_ID = 1;
 export async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = localStorage.getItem('token');
   const res = await fetch(path, {
+    credentials: 'include',
     ...options,
     headers: {
       'Content-Type': 'application/json',

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { productsApi, type Product } from '../api/products';
+import { useCart } from '../context/CartContext';
 
 function ImagePlaceholder() {
   return (
@@ -25,9 +26,13 @@ function ImagePlaceholder() {
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { addItem } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [qty, setQty] = useState(1);
+  const [adding, setAdding] = useState(false);
+  const [added, setAdded] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -128,6 +133,42 @@ export default function ProductDetailPage() {
               {product.isActive ? 'Disponible' : 'No disponible'}
             </span>
           </div>
+
+          {product.isActive && (
+            <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+              <input
+                type="number"
+                min={1}
+                max={99}
+                value={qty}
+                onChange={e => setQty(Math.min(99, Math.max(1, Number(e.target.value))))}
+                className="w-16 border border-gray-300 rounded-lg px-2 py-2 text-sm text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <button
+                disabled={adding}
+                onClick={async () => {
+                  if (adding) return;
+                  setAdding(true);
+                  try {
+                    await addItem(product.id, qty);
+                    setAdded(true);
+                    setTimeout(() => setAdded(false), 1500);
+                  } catch {
+                    // error surfaced via CartContext
+                  } finally {
+                    setAdding(false);
+                  }
+                }}
+                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  added
+                    ? 'bg-green-600 text-white'
+                    : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                } disabled:opacity-50`}
+              >
+                {added ? 'Agregado al carrito ✓' : adding ? 'Agregando...' : 'Agregar al carrito'}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

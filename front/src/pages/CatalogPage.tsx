@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productsApi, type ProductSummary } from '../api/products';
+import { useCart } from '../context/CartContext';
 
 function ImagePlaceholder() {
   return (
@@ -24,6 +25,24 @@ function ImagePlaceholder() {
 
 function ProductCard({ product }: { product: ProductSummary }) {
   const navigate = useNavigate();
+  const { addItem } = useCart();
+  const [adding, setAdding] = useState(false);
+  const [added, setAdded] = useState(false);
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (adding) return;
+    setAdding(true);
+    try {
+      await addItem(product.id, 1);
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1500);
+    } catch {
+      // error surfaced via CartContext
+    } finally {
+      setAdding(false);
+    }
+  };
 
   return (
     <div
@@ -41,9 +60,17 @@ function ProductCard({ product }: { product: ProductSummary }) {
             {Number(product.price).toFixed(2)}{' '}
             <span className="text-xs font-normal text-gray-500">{product.currency}</span>
           </span>
-          <span className="text-xs text-indigo-500 hover:text-indigo-700 font-medium">
-            Ver →
-          </span>
+          <button
+            onClick={handleAddToCart}
+            disabled={adding}
+            className={`text-xs font-medium px-2 py-1 rounded-lg transition-colors ${
+              added
+                ? 'bg-green-100 text-green-700'
+                : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
+            } disabled:opacity-50`}
+          >
+            {added ? 'Agregado ✓' : adding ? '...' : '+ Carrito'}
+          </button>
         </div>
       </div>
     </div>
