@@ -1,7 +1,10 @@
 package com.example.demo.auth;
 
 import com.example.demo.auth.dto.*;
+import com.example.demo.cart.service.CartService;
 import com.example.demo.user.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,11 +20,14 @@ public class AuthService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CartService cartService;
 
-    public AuthService(JwtService jwtService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(JwtService jwtService, UserRepository userRepository,
+                       PasswordEncoder passwordEncoder, CartService cartService) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.cartService = cartService;
     }
 
     public AuthResponse register(RegisterRequest req) {
@@ -29,7 +35,7 @@ public class AuthService {
         return new AuthResponse(access, generateRefreshToken());
     }
 
-    public AuthResponse login(LoginRequest req) {
+    public AuthResponse login(LoginRequest req, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         var user = userRepository.findByEmail(req.usernameOrEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales incorrectas"));
 
@@ -41,6 +47,9 @@ public class AuthService {
         List<String> roles = user.getRoles().stream().map(r -> r.getName()).toList();
 
         String access = jwtService.generateAccessToken(user.getEmail(), businessId, roles);
+
+        cartService.mergeGuestCart(user.getId(), httpRequest, httpResponse);
+
         return new AuthResponse(access, generateRefreshToken());
     }
 

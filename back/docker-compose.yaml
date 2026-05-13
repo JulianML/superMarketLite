@@ -60,6 +60,23 @@ services:
     networks:
       - market-network
 
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: market-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - market-network
+
   # Servicio de la aplicación Spring Boot
   app:
     build: .
@@ -68,6 +85,8 @@ services:
       mysql-db:
         condition: service_healthy
       kafka:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/market_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
@@ -78,6 +97,7 @@ services:
       SPRING_DEVTOOLS_RESTART_ENABLED: true
       SPRING_DEVTOOLS_LIVERELOAD_ENABLED: true
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      SPRING_RABBITMQ_HOST: rabbitmq
       JWT_SECRET: super-secret-change-me
     ports:
       - "8080:8080"
