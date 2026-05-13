@@ -46,6 +46,16 @@ export default function Navbar() {
           </NavLink>
         </>
       )}
+      {user && (
+        <NavLink
+          to="/orders"
+          className={({ isActive }) =>
+            `text-sm ${isActive ? 'text-white font-medium' : 'text-gray-400 hover:text-white'}`
+          }
+        >
+          Mis pedidos
+        </NavLink>
+      )}
       <NavLink
         to="/cart"
         className={({ isActive }) =>

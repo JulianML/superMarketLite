@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import type { CartItemDTO } from '../api/cart';
 
 function CartItemRow({
@@ -79,6 +80,8 @@ function CartItemRow({
 
 export default function CartPage() {
   const { cart, loading, error, updateItem, removeItem, clearCart } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [clearing, setClearing] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
 
@@ -181,11 +184,28 @@ export default function CartPage() {
             >
               {clearing ? 'Vaciando...' : 'Vaciar carrito'}
             </button>
-            <div className="text-right">
-              <p className="text-xs text-gray-500 mb-0.5">Total</p>
-              <p className="text-2xl font-bold text-indigo-600">
-                {Number(cart.total).toFixed(2)}
-              </p>
+            <div className="flex items-center gap-6">
+              <div className="text-right">
+                <p className="text-xs text-gray-500 mb-0.5">Total</p>
+                <p className="text-2xl font-bold text-indigo-600">
+                  {Number(cart.total).toFixed(2)}
+                </p>
+              </div>
+              {user ? (
+                <button
+                  onClick={() => navigate('/checkout/address')}
+                  className="bg-indigo-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors"
+                >
+                  Finalizar compra
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="bg-indigo-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors"
+                >
+                  Iniciar sesión para comprar
+                </Link>
+              )}
             </div>
           </div>
         </div>

@@ -17,6 +17,12 @@ public class RabbitMQConfig {
     public static final String CART_DLQ         = "cart.sync.dlq";
     public static final String CART_DLQ_KEY     = "cart.sync.dlq";
 
+    public static final String ORDER_EXCHANGE   = "order.exchange";
+    public static final String ORDER_PLACED_QUEUE = "order.placed.queue";
+    public static final String ORDER_PLACED_KEY   = "order.placed";
+    public static final String ORDER_DLX          = "order.dlx";
+    public static final String ORDER_DLQ          = "order.placed.dlq";
+
     @Bean
     DirectExchange cartExchange() {
         return ExchangeBuilder.directExchange(CART_EXCHANGE).durable(true).build();
@@ -48,6 +54,39 @@ public class RabbitMQConfig {
     @Bean
     Binding cartDlqBinding(Queue cartDlq, DirectExchange cartDlx) {
         return BindingBuilder.bind(cartDlq).to(cartDlx).with(CART_DLQ_KEY);
+    }
+
+    @Bean
+    DirectExchange orderExchange() {
+        return ExchangeBuilder.directExchange(ORDER_EXCHANGE).durable(true).build();
+    }
+
+    @Bean
+    DirectExchange orderDlx() {
+        return ExchangeBuilder.directExchange(ORDER_DLX).durable(true).build();
+    }
+
+    @Bean
+    Queue orderPlacedQueue() {
+        return QueueBuilder.durable(ORDER_PLACED_QUEUE)
+                .withArgument("x-dead-letter-exchange", ORDER_DLX)
+                .withArgument("x-dead-letter-routing-key", ORDER_DLQ)
+                .build();
+    }
+
+    @Bean
+    Queue orderDlq() {
+        return QueueBuilder.durable(ORDER_DLQ).build();
+    }
+
+    @Bean
+    Binding orderPlacedBinding(Queue orderPlacedQueue, DirectExchange orderExchange) {
+        return BindingBuilder.bind(orderPlacedQueue).to(orderExchange).with(ORDER_PLACED_KEY);
+    }
+
+    @Bean
+    Binding orderDlqBinding(Queue orderDlq, DirectExchange orderDlx) {
+        return BindingBuilder.bind(orderDlq).to(orderDlx).with(ORDER_DLQ);
     }
 
     @Bean
