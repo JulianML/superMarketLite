@@ -23,7 +23,6 @@ export default function CheckoutAddressPage() {
     resolver: zodResolver(schema),
   });
 
-  // Empty cart guard
   if (!cart || cart.items.length === 0) {
     navigate('/cart', { replace: true });
     return null;
@@ -38,10 +37,10 @@ export default function CheckoutAddressPage() {
     <div className="max-w-lg mx-auto">
       <div className="mb-6">
         <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Paso 1 de 3</p>
-        <h1 className="text-2xl font-bold text-gray-800">Dirección de entrega</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Dirección de entrega</h1>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 space-y-5">
         <Field label="Calle y número" error={errors.street?.message}>
           <input {...register('street')} placeholder="Av. Example 123" className={input(!!errors.street)} />
         </Field>
@@ -60,7 +59,7 @@ export default function CheckoutAddressPage() {
         <div className="pt-2 flex justify-end">
           <button
             type="submit"
-            className="bg-indigo-600 text-white text-sm font-medium px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors"
+            className="bg-[#1DA462] hover:bg-[#178a52] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
           >
             Continuar al resumen
           </button>
@@ -81,7 +80,7 @@ function Field({ label, error, children }: { label: string; error?: string; chil
 }
 
 function input(hasError: boolean) {
-  return `w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+  return `w-full border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DA462] focus:border-transparent ${
     hasError ? 'border-red-400' : 'border-gray-300'
   }`;
 }

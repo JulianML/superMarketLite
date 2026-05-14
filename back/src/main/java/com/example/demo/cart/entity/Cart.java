@@ -27,8 +27,8 @@ public class Cart {
     @Column(nullable = false)
     private String status = "ACTIVE";
 
-    @Column(name = "is_active", nullable = false)
-    private boolean active = true;
+    @Column(name = "is_active", nullable = true)
+    private Boolean active = true;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

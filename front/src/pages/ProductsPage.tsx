@@ -115,7 +115,7 @@ export default function ProductsPage() {
         <h1 className="text-2xl font-bold text-gray-800">Productos</h1>
         <button
           onClick={openCreate}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
+          className="bg-[#1DA462] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#178a52]"
         >
           + Nuevo producto
         </button>
@@ -130,7 +130,7 @@ export default function ProductsPage() {
           placeholder="Buscar por nombre o SKU..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-72 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-72 focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
         />
         <button
           type="submit"
@@ -199,7 +199,7 @@ export default function ProductsPage() {
                   <div className="flex gap-3 justify-center">
                     <button
                       onClick={() => openEdit(p)}
-                      className="text-indigo-600 hover:text-indigo-800 text-xs font-medium"
+                      className="text-[#1DA462] hover:text-[#178a52] text-xs font-medium"
                     >
                       Editar
                     </button>
@@ -252,7 +252,7 @@ export default function ProductsPage() {
                   required
                   value={form.sku}
                   onChange={e => setForm(f => ({ ...f, sku: e.target.value }))}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
                 />
               </div>
               <div>
@@ -261,7 +261,7 @@ export default function ProductsPage() {
                   required
                   value={form.name}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
                 />
               </div>
             </div>
@@ -271,7 +271,7 @@ export default function ProductsPage() {
                 value={form.description}
                 onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                 rows={2}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
               />
             </div>
             <div className="grid grid-cols-3 gap-3">
@@ -284,7 +284,7 @@ export default function ProductsPage() {
                   min="0"
                   value={form.price}
                   onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
                 />
               </div>
               <div>
@@ -293,7 +293,7 @@ export default function ProductsPage() {
                   value={form.currency}
                   onChange={e => setForm(f => ({ ...f, currency: e.target.value.toUpperCase() }))}
                   maxLength={3}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
                 />
               </div>
               <div>
@@ -305,7 +305,7 @@ export default function ProductsPage() {
                   max="100"
                   value={form.vatRate}
                   onChange={e => setForm(f => ({ ...f, vatRate: e.target.value }))}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
                 />
               </div>
             </div>
@@ -332,7 +332,7 @@ export default function ProductsPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
+                className="bg-[#1DA462] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#178a52] disabled:opacity-50"
               >
                 {saving ? 'Guardando...' : 'Guardar'}
               </button>

@@ -148,7 +148,7 @@ public class CheckoutService {
         historyRepository.save(history);
 
         // Deactivate cart
-        cart.setActive(false);
+        cart.setActive(null);
         cart.setStatus("CHECKED_OUT");
         cartRepository.save(cart);
 

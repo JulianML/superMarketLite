@@ -129,6 +129,11 @@
                 <artifactId>lombok</artifactId>
                 <scope>provided</scope>
             </dependency>
+            <!-- Spring Batch -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-batch</artifactId>
+            </dependency>
         </dependencies>
 
 	<build>

@@ -145,7 +145,7 @@ export default function InventoryPage() {
                   <td className="px-4 py-3">
                     <button
                       onClick={() => navigate(`/inventory/${item.productId}/movements`)}
-                      className="text-indigo-600 hover:underline font-medium"
+                      className="text-[#1DA462] hover:underline font-medium"
                     >
                       #{item.productId}
                     </button>
@@ -171,7 +171,7 @@ export default function InventoryPage() {
                     <div className="flex gap-3 justify-center">
                       <button
                         onClick={() => openSet(item)}
-                        className="text-indigo-600 hover:text-indigo-800 text-xs font-medium"
+                        className="text-[#1DA462] hover:text-[#178a52] text-xs font-medium"
                       >
                         Establecer
                       </button>
@@ -210,7 +210,7 @@ export default function InventoryPage() {
                 min="0"
                 value={stockForm.stock}
                 onChange={e => setStockForm(f => ({ ...f, stock: e.target.value }))}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
               />
             </div>
             <div>
@@ -220,7 +220,7 @@ export default function InventoryPage() {
                 min="0"
                 value={stockForm.safetyStock}
                 onChange={e => setStockForm(f => ({ ...f, safetyStock: e.target.value }))}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
               />
             </div>
             <div className="flex justify-end gap-2 pt-2">
@@ -234,7 +234,7 @@ export default function InventoryPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
+                className="bg-[#1DA462] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#178a52] disabled:opacity-50"
               >
                 {saving ? 'Guardando...' : 'Establecer'}
               </button>
@@ -261,7 +261,7 @@ export default function InventoryPage() {
                 type="number"
                 value={adjustForm.delta}
                 onChange={e => setAdjustForm(f => ({ ...f, delta: e.target.value }))}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
                 placeholder="ej: -5 o 10"
               />
             </div>
@@ -271,7 +271,7 @@ export default function InventoryPage() {
                 required
                 value={adjustForm.reason}
                 onChange={e => setAdjustForm(f => ({ ...f, reason: e.target.value }))}
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
                 placeholder="ej: venta, devolución, ajuste manual"
               />
             </div>

@@ -15,7 +15,7 @@ const STATUS_COLOR: Record<string, string> = {
   PENDING:   'bg-gray-100 text-gray-600',
   CONFIRMED: 'bg-blue-100 text-blue-700',
   PREPARING: 'bg-yellow-100 text-yellow-700',
-  SHIPPED:   'bg-indigo-100 text-indigo-700',
+  SHIPPED:   'bg-[#f0faf4] text-[#1DA462]',
   DELIVERED: 'bg-green-100 text-green-700',
   CANCELLED: 'bg-red-100 text-red-700',
 };
@@ -37,9 +37,9 @@ export default function OrderDetailPage() {
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto animate-pulse space-y-4 mt-8">
-        <div className="h-6 bg-gray-200 rounded w-56" />
-        <div className="h-32 bg-gray-100 rounded-xl" />
-        <div className="h-40 bg-gray-100 rounded-xl" />
+        <div className="h-6 bg-gray-200 rounded-full w-56" />
+        <div className="h-32 bg-gray-100 rounded-2xl" />
+        <div className="h-40 bg-gray-100 rounded-2xl" />
       </div>
     );
   }
@@ -47,10 +47,10 @@ export default function OrderDetailPage() {
   if (error || !order) {
     return (
       <div className="max-w-3xl mx-auto mt-8">
-        <div className="bg-red-50 text-red-700 p-4 rounded-lg text-sm">
+        <div className="bg-red-50 text-red-700 p-4 rounded-xl text-sm">
           {error ?? 'Pedido no encontrado'}
         </div>
-        <Link to="/orders" className="text-sm text-indigo-500 hover:text-indigo-700 mt-4 inline-block">
+        <Link to="/orders" className="text-sm text-[#1DA462] hover:text-[#178a52] mt-4 inline-block">
           ← Volver a pedidos
         </Link>
       </div>
@@ -68,16 +68,14 @@ export default function OrderDetailPage() {
         </span>
       </div>
 
-      {/* Delivery address */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-4">
         <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Dirección de entrega</h2>
         <p className="text-sm text-gray-700">{order.deliveryAddress.street}</p>
         <p className="text-sm text-gray-700">{order.deliveryAddress.postalCode} {order.deliveryAddress.city}</p>
         <p className="text-sm text-gray-700">{order.deliveryAddress.country}</p>
       </div>
 
-      {/* Items */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-4">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-4">
         <table className="w-full">
           <thead>
             <tr className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wide">
@@ -96,7 +94,7 @@ export default function OrderDetailPage() {
                 </td>
                 <td className="px-4 py-3 text-center text-sm text-gray-600">{item.quantity}</td>
                 <td className="px-4 py-3 text-right text-sm text-gray-600">€{Number(item.unitPrice).toFixed(2)}</td>
-                <td className="px-4 py-3 text-right text-sm font-semibold text-indigo-600">€{Number(item.lineTotal).toFixed(2)}</td>
+                <td className="px-4 py-3 text-right text-sm font-semibold text-[#1DA462]">€{Number(item.lineTotal).toFixed(2)}</td>
               </tr>
             ))}
           </tbody>
@@ -111,14 +109,13 @@ export default function OrderDetailPage() {
         </div>
       </div>
 
-      {/* Status timeline */}
       {order.history.length > 0 && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
           <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">Historial de estado</h2>
           <ol className="relative border-l border-gray-200 space-y-4 ml-2">
             {order.history.map((h, i) => (
               <li key={i} className="ml-4">
-                <div className="absolute w-2.5 h-2.5 bg-indigo-400 rounded-full -left-1.5 border border-white mt-1" />
+                <div className="absolute w-2.5 h-2.5 bg-[#1DA462] rounded-full -left-1.5 border border-white mt-1" />
                 <p className="text-sm font-medium text-gray-800">
                   {STATUS_LABEL[h.toStatus] ?? h.toStatus}
                 </p>
@@ -138,8 +135,8 @@ export default function OrderDetailPage() {
 function SummaryRow({ label, value, bold }: { label: string; value: number; bold?: boolean }) {
   return (
     <div className="flex justify-between text-sm">
-      <span className={bold ? 'font-bold text-gray-800' : 'text-gray-500'}>{label}</span>
-      <span className={bold ? 'font-bold text-indigo-600' : 'text-gray-700'}>€{Number(value).toFixed(2)}</span>
+      <span className={bold ? 'font-bold text-gray-900' : 'text-gray-500'}>{label}</span>
+      <span className={bold ? 'font-bold text-[#1DA462]' : 'text-gray-700'}>€{Number(value).toFixed(2)}</span>
     </div>
   );
 }

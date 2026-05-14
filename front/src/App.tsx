@@ -2,10 +2,11 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { CheckoutProvider } from './context/CheckoutContext';
-import PrivateRoute from './components/PrivateRoute';
 import UserRoute from './components/UserRoute';
+import AdminLayout from './components/AdminLayout';
 import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
+import AdminLoginPage from './pages/AdminLoginPage';
 import ProductsPage from './pages/ProductsPage';
 import InventoryPage from './pages/InventoryPage';
 import MovementsPage from './pages/MovementsPage';
@@ -17,13 +18,12 @@ import CheckoutSummaryPage from './pages/CheckoutSummaryPage';
 import CheckoutConfirmationPage from './pages/CheckoutConfirmationPage';
 import OrdersPage from './pages/OrdersPage';
 import OrderDetailPage from './pages/OrderDetailPage';
-import { BUSINESS_ID } from './api/client';
 
 function AppLayout() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#f5f5f5]">
       <Navbar />
-      <main className="p-6 max-w-6xl mx-auto">
+      <main className="px-6 py-6 max-w-7xl mx-auto">
         <Outlet />
       </main>
     </div>
@@ -37,14 +37,25 @@ export default function App() {
         <CheckoutProvider>
           <BrowserRouter>
             <Routes>
+              {/* Public login for buyers */}
               <Route path="/login" element={<LoginPage />} />
+
+              {/* Admin section */}
+              <Route path="/admin/login" element={<AdminLoginPage />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Navigate to="products" replace />} />
+                <Route path="products" element={<ProductsPage />} />
+                <Route path="inventory" element={<InventoryPage />} />
+                <Route path="inventory/:productId/movements" element={<MovementsPage />} />
+              </Route>
+
+              {/* Buyer-facing store */}
               <Route element={<AppLayout />}>
                 <Route path="/" element={<Navigate to="/catalog" replace />} />
                 <Route path="/catalog" element={<CatalogPage />} />
                 <Route path="/catalog/:id" element={<ProductDetailPage />} />
                 <Route path="/cart" element={<CartPage />} />
 
-                {/* Checkout flow — requires login */}
                 <Route path="/checkout/address" element={
                   <UserRoute><CheckoutAddressPage /></UserRoute>
                 } />
@@ -55,38 +66,12 @@ export default function App() {
                   <UserRoute><CheckoutConfirmationPage /></UserRoute>
                 } />
 
-                {/* Order history — requires login */}
                 <Route path="/orders" element={
                   <UserRoute><OrdersPage /></UserRoute>
                 } />
                 <Route path="/orders/:id" element={
                   <UserRoute><OrderDetailPage /></UserRoute>
                 } />
-
-                <Route
-                  path="/products"
-                  element={
-                    <PrivateRoute requiredBusinessId={BUSINESS_ID}>
-                      <ProductsPage />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/inventory"
-                  element={
-                    <PrivateRoute requiredBusinessId={BUSINESS_ID}>
-                      <InventoryPage />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/inventory/:productId/movements"
-                  element={
-                    <PrivateRoute requiredBusinessId={BUSINESS_ID}>
-                      <MovementsPage />
-                    </PrivateRoute>
-                  }
-                />
               </Route>
             </Routes>
           </BrowserRouter>

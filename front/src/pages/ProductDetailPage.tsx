@@ -3,11 +3,22 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { productsApi, type Product } from '../api/products';
 import { useCart } from '../context/CartContext';
 
-function ImagePlaceholder() {
+function ProductImage({ src, alt }: { src?: string; alt: string }) {
+  const [failed, setFailed] = useState(false);
+  if (src && !failed) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className="w-full aspect-square object-cover rounded-2xl bg-gray-50"
+        onError={() => setFailed(true)}
+      />
+    );
+  }
   return (
-    <div className="w-full aspect-[4/3] bg-gray-100 rounded-xl flex items-center justify-center">
+    <div className="w-full aspect-square bg-gray-50 rounded-2xl flex items-center justify-center">
       <svg
-        className="w-16 h-16 text-gray-300"
+        className="w-20 h-20 text-gray-300"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -15,7 +26,7 @@ function ImagePlaceholder() {
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth={1.5}
+          strokeWidth={1}
           d="M4 16l4-4a3 3 0 014.24 0L16 16m-2-2l1.59-1.59A3 3 0 0119 12.24V16M4 8h.01M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"
         />
       </svg>
@@ -47,15 +58,15 @@ export default function ProductDetailPage() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto animate-pulse">
-        <div className="h-4 bg-gray-200 rounded w-32 mb-6" />
+        <div className="h-4 bg-gray-200 rounded-full w-32 mb-6" />
         <div className="flex flex-col md:flex-row gap-8">
-          <div className="w-full md:w-1/2 aspect-[4/3] bg-gray-200 rounded-xl" />
+          <div className="w-full md:w-1/2 aspect-square bg-gray-200 rounded-2xl" />
           <div className="flex-1 space-y-4 pt-2">
-            <div className="h-7 bg-gray-200 rounded w-3/4" />
-            <div className="h-4 bg-gray-100 rounded w-1/4" />
-            <div className="h-4 bg-gray-100 rounded w-full" />
-            <div className="h-4 bg-gray-100 rounded w-5/6" />
-            <div className="h-8 bg-gray-200 rounded w-1/3 mt-4" />
+            <div className="h-7 bg-gray-200 rounded-full w-3/4" />
+            <div className="h-4 bg-gray-100 rounded-full w-1/4" />
+            <div className="h-4 bg-gray-100 rounded-full w-full" />
+            <div className="h-4 bg-gray-100 rounded-full w-5/6" />
+            <div className="h-8 bg-gray-200 rounded-full w-1/3 mt-4" />
           </div>
         </div>
       </div>
@@ -67,11 +78,11 @@ export default function ProductDetailPage() {
       <div className="max-w-4xl mx-auto">
         <button
           onClick={() => navigate('/catalog')}
-          className="text-sm text-indigo-600 hover:text-indigo-800 mb-6 inline-flex items-center gap-1"
+          className="text-sm text-[#1DA462] hover:text-[#178a52] mb-6 inline-flex items-center gap-1"
         >
           ← Volver al catálogo
         </button>
-        <div className="bg-red-50 text-red-700 p-4 rounded-lg text-sm">
+        <div className="bg-red-50 text-red-700 p-4 rounded-xl text-sm">
           {error ?? 'Producto no encontrado.'}
         </div>
       </div>
@@ -87,46 +98,45 @@ export default function ProductDetailPage() {
     <div className="max-w-4xl mx-auto">
       <button
         onClick={() => navigate(-1)}
-        className="text-sm text-indigo-600 hover:text-indigo-800 mb-6 inline-flex items-center gap-1"
+        className="text-sm text-[#1DA462] hover:text-[#178a52] mb-6 inline-flex items-center gap-1"
       >
         ← Volver al catálogo
       </button>
 
-      <div className="flex flex-col md:flex-row gap-8 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div className="flex flex-col md:flex-row gap-8 bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
         <div className="w-full md:w-5/12 flex-shrink-0">
-          <ImagePlaceholder />
+          <ProductImage src={product.imageUrl} alt={product.name} />
         </div>
 
         <div className="flex-1 flex flex-col gap-4">
           <div>
-            <p className="text-xs text-gray-400 font-mono mb-1">SKU: {product.sku}</p>
-            <h1 className="text-2xl font-bold text-gray-800 leading-tight">{product.name}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 leading-tight">{product.name}</h1>
+            <p className="text-xs text-gray-400 font-mono mt-1">SKU: {product.sku}</p>
           </div>
 
           {product.description && (
             <p className="text-sm text-gray-600 leading-relaxed">{product.description}</p>
           )}
 
-          <div className="border-t border-gray-100 pt-4 space-y-2">
+          <div className="border-t border-gray-100 pt-4 space-y-1">
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold text-indigo-600">
+              <span className="text-4xl font-bold text-gray-900">
                 {Number(product.price).toFixed(2)}
               </span>
-              <span className="text-base text-gray-500">{product.currency}</span>
+              <span className="text-xl text-gray-500">{product.currency}</span>
             </div>
-
             {priceWithVat != null && (
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-400">
                 {priceWithVat.toFixed(2)} {product.currency} con IVA ({product.vatRate}%)
               </p>
             )}
           </div>
 
-          <div className="flex flex-wrap gap-2 mt-auto pt-2">
+          <div className="flex flex-wrap gap-2">
             <span
               className={`px-3 py-1 rounded-full text-xs font-medium ${
                 product.isActive
-                  ? 'bg-green-100 text-green-700'
+                  ? 'bg-[#f0faf4] text-[#1DA462]'
                   : 'bg-gray-100 text-gray-500'
               }`}
             >
@@ -135,14 +145,14 @@ export default function ProductDetailPage() {
           </div>
 
           {product.isActive && (
-            <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-3 pt-4 border-t border-gray-100 mt-auto">
               <input
                 type="number"
                 min={1}
                 max={99}
                 value={qty}
                 onChange={e => setQty(Math.min(99, Math.max(1, Number(e.target.value))))}
-                className="w-16 border border-gray-300 rounded-lg px-2 py-2 text-sm text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-16 border border-gray-300 rounded-xl px-2 py-2 text-sm text-center focus:outline-none focus:ring-2 focus:ring-[#1DA462]"
               />
               <button
                 disabled={adding}
@@ -159,13 +169,13 @@ export default function ProductDetailPage() {
                     setAdding(false);
                   }
                 }}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex-1 py-2.5 rounded-full text-sm font-semibold transition-colors ${
                   added
-                    ? 'bg-green-600 text-white'
-                    : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                    ? 'bg-gray-100 text-gray-600'
+                    : 'bg-[#1DA462] hover:bg-[#178a52] text-white'
                 } disabled:opacity-50`}
               >
-                {added ? 'Agregado al carrito ✓' : adding ? 'Agregando...' : 'Agregar al carrito'}
+                {added ? '✓ Añadido a la cesta' : adding ? 'Añadiendo...' : '+ Añadir a la cesta'}
               </button>
             </div>
           )}

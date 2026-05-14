@@ -8,6 +8,7 @@ export interface ProductSummary {
   price: number;
   currency: string;
   isActive: boolean;
+  imageUrl?: string;
 }
 
 export interface Product extends ProductSummary {

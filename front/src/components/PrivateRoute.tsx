@@ -13,10 +13,10 @@ export default function PrivateRoute({ children, requiredBusinessId }: Props) {
   if (!user) return <Navigate to="/login" replace />;
 
   const isAdmin = user.roles.includes('ADMIN') || user.roles.includes('BUSINESS_OWNER');
-  if (!isAdmin) return <Navigate to="/login" replace />;
+  if (!isAdmin) return <Navigate to="/catalog" replace />;
 
   if (requiredBusinessId !== undefined && user.businessId !== requiredBusinessId) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/catalog" replace />;
   }
 
   return <>{children}</>;

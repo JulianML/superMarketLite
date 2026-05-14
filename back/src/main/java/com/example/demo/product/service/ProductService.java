@@ -8,15 +8,19 @@ import com.example.demo.inventory.repo.InventoryRepository;
 import com.example.demo.product.dto.ProductDTOs;
 import com.example.demo.product.dto.ProductEvent;
 import com.example.demo.product.entity.Product;
+import com.example.demo.product.entity.ProductImage;
+import com.example.demo.product.repo.ProductImageRepository;
 import com.example.demo.product.repo.ProductRepository;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -24,24 +28,37 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final InventoryRepository inventoryRepository;
     private final KafkaProducerService kafkaProducerService;
+    private final ProductImageRepository productImageRepository;
 
-    public ProductService(ProductRepository productRepository, InventoryRepository inventoryRepository, KafkaProducerService kafkaProducerService) {
+    public ProductService(ProductRepository productRepository, InventoryRepository inventoryRepository,
+                          KafkaProducerService kafkaProducerService, ProductImageRepository productImageRepository) {
         this.productRepository = productRepository;
         this.inventoryRepository = inventoryRepository;
         this.kafkaProducerService = kafkaProducerService;
+        this.productImageRepository = productImageRepository;
     }
 
     public Page<ProductDTOs.ProductSummaryDTO> list(Long businessId, String q, Pageable pageable) {
         Page<Product> page = (q == null || q.isBlank())
                 ? productRepository.findByBusinessIdAndIsActiveTrue(businessId, pageable)
                 : productRepository.search(businessId, q, pageable);
-        return page.map(this::toSummaryDTO);
+
+        List<Long> ids = page.getContent().stream().map(Product::getId).toList();
+        Map<Long, String> imageMap = ids.isEmpty() ? Map.of() :
+                productImageRepository.findPrimaryByProductIds(ids).stream()
+                        .collect(Collectors.toMap(ProductImage::getProductId, ProductImage::getUrl, (a, b) -> a));
+
+        return page.map(p -> toSummaryDTO(p, imageMap.get(p.getId())));
     }
 
     public ProductDTOs.ProductDTO get(Long businessId, Long id) {
         Product product = productRepository.findByBusinessIdAndId(businessId, id)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
-        return toDTO(product);
+        String imageUrl = productImageRepository
+                .findFirstByProductIdAndPositionAndDeletedAtIsNull(id, 0)
+                .map(ProductImage::getUrl)
+                .orElse(null);
+        return toDTO(product, imageUrl);
     }
 
     @Transactional
@@ -72,7 +89,7 @@ public class ProductService {
 
         sendToKafka(p);
 
-        return toDTO(p);
+        return toDTO(p, null);
     }
 
     private void sendToKafka(Product p) {
@@ -130,7 +147,11 @@ public class ProductService {
 
         sendToKafka(p);
 
-        return toDTO(p);
+        String imageUrl = productImageRepository
+                .findFirstByProductIdAndPositionAndDeletedAtIsNull(p.getId(), 0)
+                .map(ProductImage::getUrl)
+                .orElse(null);
+        return toDTO(p, imageUrl);
     }
 
     @Transactional
@@ -142,7 +163,7 @@ public class ProductService {
         productRepository.save(p);
     }
 
-    private ProductDTOs.ProductDTO toDTO(Product p) {
+    private ProductDTOs.ProductDTO toDTO(Product p, String imageUrl) {
         ProductDTOs.ProductDTO dto = new ProductDTOs.ProductDTO();
         dto.id = p.getId();
         dto.businessId = p.getBusinessId();
@@ -153,13 +174,14 @@ public class ProductService {
         dto.currency = p.getCurrency();
         dto.vatRate = p.getVatRate();
         dto.isActive = p.isActive();
+        dto.imageUrl = imageUrl;
         dto.createdAt = p.getCreatedAt();
         dto.updatedAt = p.getUpdatedAt();
         dto.deletedAt = p.getDeletedAt();
         return dto;
     }
 
-    private ProductDTOs.ProductSummaryDTO toSummaryDTO(Product p) {
+    private ProductDTOs.ProductSummaryDTO toSummaryDTO(Product p, String imageUrl) {
         ProductDTOs.ProductSummaryDTO dto = new ProductDTOs.ProductSummaryDTO();
         dto.id = p.getId();
         dto.businessId = p.getBusinessId();
@@ -168,6 +190,7 @@ public class ProductService {
         dto.price = p.getPrice();
         dto.currency = p.getCurrency();
         dto.isActive = p.isActive();
+        dto.imageUrl = imageUrl;
         return dto;
     }
 }

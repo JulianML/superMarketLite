@@ -1,0 +1,57 @@
+sku,name,description,price,currency,vat_rate,category,image_url,stock,safety_stock
+BET-003,Yogur natural pack 4,"Yogur natural sin azúcar, textura cremosa, pack de 4 unidades",1.29,EUR,4.00,Lácteos,https://picsum.photos/seed/bet003/400/400,220,30
+BET-004,Queso curado 250g,"Queso curado de oveja con sabor intenso, cortado en cuña",3.45,EUR,4.00,Lácteos,https://picsum.photos/seed/bet004/400/400,90,10
+BET-005,Mantequilla 250g,"Mantequilla sin sal de calidad extra, ideal para cocinar y untar",1.89,EUR,4.00,Lácteos,https://picsum.photos/seed/bet005/400/400,110,15
+BET-006,Nata para cocinar 200ml,Nata líquida para cocinar con 18% de materia grasa,0.79,EUR,4.00,Lácteos,https://picsum.photos/seed/bet006/400/400,150,20
+BET-007,Queso fresco batido 250g,"Queso fresco batido suave, bajo en grasas y alto en proteínas",1.99,EUR,4.00,Lácteos,https://picsum.photos/seed/bet007/400/400,100,15
+BET-008,Pan de molde integral,"Pan de molde integral con semillas, sin conservantes añadidos",1.49,EUR,4.00,Panadería y Cereales,https://picsum.photos/seed/bet008/400/400,200,25
+BET-009,Cereales con miel 500g,"Copos de maíz tostados con miel, fuente de energía para el día",2.99,EUR,4.00,Panadería y Cereales,https://picsum.photos/seed/bet009/400/400,130,15
+BET-010,Arroz largo 1kg,"Arroz de grano largo, suelto y suave tras la cocción",1.19,EUR,4.00,Panadería y Cereales,https://picsum.photos/seed/bet010/400/400,300,40
+BET-011,Pasta espagueti 500g,"Espagueti de sémola de trigo duro, cocción perfecta en 8 min",0.89,EUR,4.00,Panadería y Cereales,https://picsum.photos/seed/bet011/400/400,250,30
+BET-012,Avena en copos 500g,"Avena integral en copos, ideal para porridge y batidos",1.69,EUR,4.00,Panadería y Cereales,https://picsum.photos/seed/bet012/400/400,120,15
+BET-013,Galletas María 200g,"Galletas María clásicas, crujientes y ligeramente dulces",0.85,EUR,4.00,Panadería y Cereales,https://picsum.photos/seed/bet013/400/400,280,35
+BET-014,Agua mineral 1.5L,"Agua mineral natural de manantial, baja en sodio",0.45,EUR,4.00,Bebidas,https://picsum.photos/seed/bet014/400/400,400,50
+BET-015,Zumo de naranja 1L,"Zumo de naranja 100% natural, sin azúcares añadidos",1.59,EUR,4.00,Bebidas,https://picsum.photos/seed/bet015/400/400,160,20
+BET-016,Refresco de cola 2L,"Refresco de cola carbonatado, botella familiar de 2 litros",1.35,EUR,4.00,Bebidas,https://picsum.photos/seed/bet016/400/400,180,25
+BET-017,Café molido 250g,"Café molido de tueste natural, mezcla arábica-robusta",3.99,EUR,4.00,Bebidas,https://picsum.photos/seed/bet017/400/400,80,10
+BET-018,Té negro 20 bolsitas,"Té negro de Ceilán en bolsitas, aroma intenso y sabor equilibrado",1.29,EUR,4.00,Bebidas,https://picsum.photos/seed/bet018/400/400,140,15
+BET-019,Batido de chocolate 1L,"Batido de cacao con leche entera, fuente de calcio y energía",1.49,EUR,4.00,Bebidas,https://picsum.photos/seed/bet019/400/400,120,15
+BET-020,Manzanas golden 1kg,"Manzanas golden de primera calidad, dulces y crujientes",1.99,EUR,4.00,Frutas y Verduras,https://picsum.photos/seed/bet020/400/400,200,30
+BET-021,Plátanos de Canarias 1kg,"Plátanos de Canarias con DO, dulces y con textura suave",1.29,EUR,4.00,Frutas y Verduras,https://picsum.photos/seed/bet021/400/400,180,25
+BET-022,Tomates cherry 500g,"Tomates cherry maduros en rama, perfectos para ensaladas",1.09,EUR,4.00,Frutas y Verduras,https://picsum.photos/seed/bet022/400/400,220,30
+BET-023,Patatas 2kg,"Patatas blancas de categoría I, ideales para freír y cocer",1.49,EUR,4.00,Frutas y Verduras,https://picsum.photos/seed/bet023/400/400,150,20
+BET-024,Cebollas 1kg,"Cebollas blancas de tamaño mediano, sabor suave y versátil",0.79,EUR,4.00,Frutas y Verduras,https://picsum.photos/seed/bet024/400/400,200,25
+BET-025,Naranjas de zumo 2kg,"Naranjas valencianas jugosas, perfectas para zumo recién exprimido",2.49,EUR,4.00,Frutas y Verduras,https://picsum.photos/seed/bet025/400/400,160,20
+BET-026,Pechuga de pollo 500g,"Pechuga de pollo fresca sin hueso ni piel, baja en grasa",3.99,EUR,4.00,Carnes y Pescados,https://picsum.photos/seed/bet026/400/400,70,10
+BET-027,Carne picada mixta 400g,"Mezcla de cerdo y ternera, ideal para hamburguesas y salsas",2.99,EUR,4.00,Carnes y Pescados,https://picsum.photos/seed/bet027/400/400,60,10
+BET-028,Filetes de merluza 400g,"Filetes de merluza del norte sin espinas, frescos y limpios",4.99,EUR,4.00,Carnes y Pescados,https://picsum.photos/seed/bet028/400/400,50,8
+BET-029,Jamón cocido extra 200g,"Jamón cocido de alta calidad, loncheado fino, sin gluten",2.49,EUR,4.00,Carnes y Pescados,https://picsum.photos/seed/bet029/400/400,90,12
+BET-030,Atún en aceite pack 3,"Atún claro en aceite de oliva, pack de 3 latas de 80g",2.19,EUR,4.00,Carnes y Pescados,https://picsum.photos/seed/bet030/400/400,200,25
+BET-031,Sardinas en aceite pack 3,"Sardinas en aceite vegetal, pack de 3 latas. Rico en omega-3",1.89,EUR,4.00,Carnes y Pescados,https://picsum.photos/seed/bet031/400/400,180,20
+BET-032,Patatas fritas onduladas 150g,"Patatas fritas onduladas con sal marina, crujientes e irresistibles",1.49,EUR,10.00,Snacks y Dulces,https://picsum.photos/seed/bet032/400/400,250,30
+BET-033,Chocolate negro 70% 100g,"Tableta de chocolate negro con 70% de cacao, intenso y puro",1.29,EUR,10.00,Snacks y Dulces,https://picsum.photos/seed/bet033/400/400,180,20
+BET-034,Gominolas de frutas 200g,"Gominolas con sabores naturales de frutas, sin colorantes",0.99,EUR,10.00,Snacks y Dulces,https://picsum.photos/seed/bet034/400/400,300,40
+BET-035,Palomitas microondas pack 3,"Palomitas con mantequilla para microondas, pack de 3 bolsas",1.99,EUR,10.00,Snacks y Dulces,https://picsum.photos/seed/bet035/400/400,150,20
+BET-036,Mix de frutos secos 200g,"Mezcla de almendras, nueces, anacardos y pasas sin sal añadida",2.29,EUR,10.00,Snacks y Dulces,https://picsum.photos/seed/bet036/400/400,120,15
+BET-037,Barritas de cereales pack 6,"Barritas de avena con miel y frutos rojos, pack de 6 unidades",2.49,EUR,10.00,Snacks y Dulces,https://picsum.photos/seed/bet037/400/400,200,25
+BET-038,Tomate triturado 400g,Tomate triturado natural sin conservantes ni colorantes añadidos,0.59,EUR,4.00,Conservas,https://picsum.photos/seed/bet038/400/400,350,45
+BET-039,Garbanzos cocidos 400g,"Garbanzos cocidos listos para usar, tiernos y naturales",0.79,EUR,4.00,Conservas,https://picsum.photos/seed/bet039/400/400,280,35
+BET-040,Maíz dulce 340g,"Maíz dulce en lata, tierno y jugoso, sin gluten",0.69,EUR,4.00,Conservas,https://picsum.photos/seed/bet040/400/400,300,40
+BET-041,Aceitunas rellenas 350g,"Aceitunas verdes rellenas de anchoa en salmuera, sabor mediterráneo",1.29,EUR,4.00,Conservas,https://picsum.photos/seed/bet041/400/400,200,25
+BET-042,Mermelada de fresa 350g,"Mermelada artesanal de fresa con un 60% de fruta, sin conservantes",1.49,EUR,4.00,Conservas,https://picsum.photos/seed/bet042/400/400,160,20
+BET-043,Miel de flores 500g,"Miel pura de flores silvestres de cosecha propia, sin aditivos",4.99,EUR,4.00,Conservas,https://picsum.photos/seed/bet043/400/400,80,10
+BET-044,Pizza margarita congelada,"Pizza margarita con mozzarella y tomate, masa fina crujiente",2.99,EUR,10.00,Congelados,https://picsum.photos/seed/bet044/400/400,100,12
+BET-045,Menestra de verduras 400g,Menestra de verduras variadas congeladas sin aditivos ni sal,1.49,EUR,10.00,Congelados,https://picsum.photos/seed/bet045/400/400,200,25
+BET-046,Helado de vainilla 500ml,"Helado cremoso de vainilla de Madagascar, elaborado con leche fresca",2.49,EUR,10.00,Congelados,https://picsum.photos/seed/bet046/400/400,80,10
+BET-047,Croquetas de jamón 500g,"Croquetas caseras de jamón ibérico congeladas, 20 unidades",3.49,EUR,10.00,Congelados,https://picsum.photos/seed/bet047/400/400,90,12
+BET-048,Champú pelo normal 400ml,"Champú suave para uso diario, con proteínas de seda y keratina",2.99,EUR,10.00,Higiene Personal,https://picsum.photos/seed/bet048/400/400,150,20
+BET-049,Gel de ducha 500ml,"Gel de ducha hidratante con aloe vera, pH neutro para piel sensible",1.99,EUR,10.00,Higiene Personal,https://picsum.photos/seed/bet049/400/400,180,22
+BET-050,Pasta de dientes 75ml,"Pasta dentífrica con flúor y menta, protección triple 24h",1.49,EUR,10.00,Higiene Personal,https://picsum.photos/seed/bet050/400/400,200,25
+BET-051,Desodorante spray 150ml,"Desodorante spray de larga duración, sin alcohol y sin aluminio",2.49,EUR,10.00,Higiene Personal,https://picsum.photos/seed/bet051/400/400,130,15
+BET-052,Jabón de manos líquido 300ml,"Jabón de manos hidratante con extracto de lavanda, bacteriostático",1.89,EUR,10.00,Higiene Personal,https://picsum.photos/seed/bet052/400/400,140,18
+BET-053,Papel higiénico 6 rollos,"Papel higiénico suave de 3 capas, extra resistente y absorbente",2.99,EUR,10.00,Higiene Personal,https://picsum.photos/seed/bet053/400/400,220,30
+BET-054,Detergente líquido ropa 1.5L,"Detergente concentrado para lavadora, eficaz a baja temperatura",4.99,EUR,21.00,Limpieza del Hogar,https://picsum.photos/seed/bet054/400/400,100,12
+BET-055,Limpiacristales spray 500ml,"Limpiacristales con amoniaco, sin rayas ni residuos",1.99,EUR,21.00,Limpieza del Hogar,https://picsum.photos/seed/bet055/400/400,120,15
+BET-056,Friegaplatos concentrado 750ml,Lavavajillas a mano concentrado con fragancia a limón,1.29,EUR,21.00,Limpieza del Hogar,https://picsum.photos/seed/bet056/400/400,160,20
+BET-057,Suavizante ropa 1.5L,"Suavizante concentrado con fragancia de primavera, antiarrugas",3.99,EUR,21.00,Limpieza del Hogar,https://picsum.photos/seed/bet057/400/400,90,12
+BET-058,Lejía multiusos 1.5L,"Lejía multiusos desinfectante, elimina el 99.9% de gérmenes",0.99,EUR,21.00,Limpieza del Hogar,https://picsum.photos/seed/bet058/400/400,140,18

@@ -45,6 +45,7 @@ public class ProductDTOs {
         public BigDecimal price;
         public String currency;
         public boolean isActive;
+        public String imageUrl;
     }
 
     public static class ProductDTO extends ProductSummaryDTO {

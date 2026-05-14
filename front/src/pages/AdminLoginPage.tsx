@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-export default function LoginPage() {
-  const { user, login } = useAuth();
-  const [email, setEmail] = useState('alice@example.com');
+export default function AdminLoginPage() {
+  const { user, login, logout } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   if (user) {
     const isAdmin = user.roles.includes('ADMIN') || user.roles.includes('BUSINESS_OWNER');
-    return <Navigate to={isAdmin ? '/admin' : '/catalog'} replace />;
+    if (isAdmin) return <Navigate to="/admin" replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,6 +21,15 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(email, password);
+      const token = localStorage.getItem('token')!;
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const roles: string[] = payload.roles ?? [];
+      if (roles.includes('ADMIN') || roles.includes('BUSINESS_OWNER')) {
+        navigate('/admin', { replace: true });
+      } else {
+        logout();
+        setError('Acceso restringido. Esta página es solo para administradores.');
+      }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
     } finally {
@@ -32,7 +42,7 @@ export default function LoginPage() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 w-full max-w-sm">
         <div className="mb-6 text-center">
           <span className="font-extrabold text-2xl text-[#1DA462]">Market</span>
-          <h1 className="text-base font-semibold text-gray-700 mt-1">Acceso al panel</h1>
+          <h1 className="text-base font-semibold text-gray-700 mt-1">Panel de Administración</h1>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -63,7 +73,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-[#1DA462] hover:bg-[#178a52] text-white py-2.5 rounded-full text-sm font-semibold disabled:opacity-50 transition-colors"
           >
-            {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+            {loading ? 'Iniciando sesión...' : 'Ingresar al panel'}
           </button>
         </form>
       </div>
